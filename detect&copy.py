@@ -5,7 +5,6 @@ import filecmp
 import win32api
 import time
 
-
 def copy_files(source_folder, dest_folder):
     # Skapa mappen i destinationen om den inte finns
     os.makedirs(dest_folder, exist_ok=True)
@@ -35,7 +34,6 @@ def copy_files(source_folder, dest_folder):
                 except Exception as e:
                     print(f"Misslyckades med att kopiera filen: {item}")
                     print(e)
-
 
 connected_drives = []
 while True:
