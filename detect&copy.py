@@ -41,20 +41,19 @@ connected_drives = []
 while True:
     new_drives = [d for d in 'FGHIJKLMNOPQRSTUVWXYZ' if d not in connected_drives and win32api.GetLogicalDrives() & (1 << ord(d) - 65)]
     if new_drives:
-        print("New drive(s) detected:", ", ".join(new_drives))
+        print("Usb(s) hittades:", ", ".join(new_drives))
         connected_drives += new_drives
     for drive in connected_drives:
         drive_path = drive + ":\\"
         try:
             volume_info = win32api.GetVolumeInformation(drive_path)
-            #print(f"Drive {drive} - Volume Name: {volume_info[0]}, Serial Number: {volume_info[1]}")
         except win32api.error as e:
             if e.winerror == 21:  # "The device is not ready" error
                 time.sleep(1)  # Wait for the drive to become ready
 
     disconnected_drives = [d for d in connected_drives if not win32api.GetLogicalDrives() & (1 << ord(d) - 65)]
     if disconnected_drives:
-        print("Drive(s) disconnected:", ", ".join(disconnected_drives))
+        print("Usb(s) frånkopplad:", ", ".join(disconnected_drives))
         connected_drives = [d for d in connected_drives if d not in disconnected_drives]
     time.sleep(1)
 
@@ -91,7 +90,3 @@ while True:
                 copy_files(source_folder, dest_folder)
             else:
                 print("Inga filer att kopiera på enheten: " + drive)
-
-
-
-    
