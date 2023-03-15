@@ -61,7 +61,7 @@ while True:
                 date_str = now.strftime('%Y-%m-%d')
 
                 desktop_path = os.path.join(os.environ['USERPROFILE'], 'Desktop', 'testing')
-                drive_folder = os.path.join(desktop_path, f"{volume_info[0]} Datum {date_str} Klocka {time_str}")
+                drive_folder = os.path.join(desktop_path, volume_info[0] , f"{date_str} Klocka {time_str}")
                 os.makedirs(drive_folder, exist_ok=True)
 
                 # Kopiera filerna och mapparna till mappen
