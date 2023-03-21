@@ -35,6 +35,8 @@ import filecmp            # Importerar funktioner för att jämföra filer
 import win32api           # Importerar funktioner för att interagera med Windows-API:et
 import time               # Importerar funktioner för att hantera tid och vänta mellan operationer
 
+
+
 #Funktion för att flytta filer från en källmapp till en målmapp
 def move_files(source_folder, dest_parent_folder):
     # Hämta namnet på den källmapp som ska flyttas
@@ -83,14 +85,14 @@ def move_files(source_folder, dest_parent_folder):
                                 # Uppdatera räknaren och skriv ut statusmeddelande med hur mycket som har flyttats
                                 progress += len(buf)
                                 percent = progress / size * 100
-                                print(f"\033[91mDo not unplug the USB driver while files are moving...\033[0m ({percent:.2f}%)", end='\r')
+                                print(f"Ta inte ur Usb stickan medan filerna flyttas... ({percent:.2f}%)", end='\r')
                     # Radera källfilen efter att kopiering har slutförts
                     os.remove(source_item)
                     # Skriv ut en bekräftelse om att filen har kopierats
-                    print(f"\033[92mFile copied: {item}\033[0m{' '*50}")
+                    print(f"Filen flyttad: {item}{' '*50}")
                 # Om kopiering misslyckas, skriv ut ett felmeddelande
                 except Exception as e:
-                    print(f"Misslyckades med att kopiera filen: {item}")
+                    print(f"Misslyckades med att flytta filen: {item}")
                     print(e)
 
 
@@ -109,7 +111,7 @@ connected_drives = set()
 # Loopar kontinuerligt
 while True:
     # Skapar en lista med nya enheter som inte finns i mängden "connected_drives"
-    new_drives = [d for d in 'EFGHIJKLMNOPQRSTUVWXYZ' if d not in connected_drives and win32api.GetLogicalDrives() & (1 << ord(d) - 65)]
+    new_drives = [d for d in 'ABDEFGHIJKLMNOPQRSTUVXYZ' if d not in connected_drives and win32api.GetLogicalDrives() & (1 << ord(d) - 65)]
     # Om det finns nya enheter, läggs de till i mängden "connected_drives"
     if new_drives:
         connected_drives.update(new_drives)
