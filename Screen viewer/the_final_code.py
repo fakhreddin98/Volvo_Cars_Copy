@@ -205,10 +205,10 @@ delete_button = tkinter.Button(frame, text="Ta bort", command=remove_url)
 delete_button.grid(row=7, column=0, columnspan=3, sticky="news", padx=20, pady=5)
 
 default_button = tkinter.Button(frame, text="Standard webbsidor", command=default_list)
-default_button.grid(row=7, column=0, columnspan=3, sticky="news", padx=20, pady=5)
+default_button.grid(row=8, column=0, columnspan=3, sticky="news", padx=20, pady=5)
 
 Clear_button = tkinter.Button(frame, text="Ta bort allt", command=clear_all)
-Clear_button.grid(row=8, column=0, columnspan=3, sticky="news", padx=20, pady=5)
+Clear_button.grid(row=9, column=0, columnspan=3, sticky="news", padx=20, pady=5)
 
 
 window.mainloop()
