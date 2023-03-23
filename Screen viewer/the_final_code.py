@@ -62,9 +62,32 @@ def clear_all():
     clear_item()    
     tree.delete(*tree.get_children())
     global urls_lists, urls_list, delay_list
-    urls_lists = []
+    print(urls_lists)    
+    print(urls_list)
+    print(delay_list)
+
+    urls_lists = []    
     urls_list  = []
     delay_list = []
+
+def default_list():
+    global urls_lists, urls_list, delay_list, urls
+
+    urls_lists =[
+                    ["https://jira-vira.volvocars.biz/secure/Dashboard.jspa?selectPageId=62405#", 10],
+                    ["https://app.powerbi.com/groups/me/apps/c7ad8b88-4322-4f17-a072-ca26bd3e7e92/reports/02d85ff0-bcc3-49df-a65e-40850b8b1fc8/ReportSectiona8d51c35a997c2053410?ctid=81fa766e-a349-4867-8bf4-ab35e250a08f", 10],
+                    ["https://app.powerbi.com/groups/me/apps/c7ad8b88-4322-4f17-a072-ca26bd3e7e92/reports/02d85ff0-bcc3-49df-a65e-40850b8b1fc8/ReportSection3e46342d2f1ccbe3342a?ctid=81fa766e-a349-4867-8bf4-ab35e250a08f", 10]
+                ]
+
+    urls_list = [  
+                    "https://jira-vira.volvocars.biz/secure/Dashboard.jspa?selectPageId=62405#",
+                    "https://app.powerbi.com/groups/me/apps/c7ad8b88-4322-4f17-a072-ca26bd3e7e92/reports/02d85ff0-bcc3-49df-a65e-40850b8b1fc8/ReportSectiona8d51c35a997c2053410?ctid=81fa766e-a349-4867-8bf4-ab35e250a08f",
+                    "https://app.powerbi.com/groups/me/apps/c7ad8b88-4322-4f17-a072-ca26bd3e7e92/reports/02d85ff0-bcc3-49df-a65e-40850b8b1fc8/ReportSection3e46342d2f1ccbe3342a?ctid=81fa766e-a349-4867-8bf4-ab35e250a08f"
+                ]
+    delay_list = [10, 10 ,10]
+    for urls in urls_lists:
+        tree.insert('', 0, values=urls)
+
 
 def scroll_to_bottom_and_back(driver):
     # Hämta höjden på webbsidan och höjden av webbläsarfönstret
@@ -180,6 +203,9 @@ start_button.grid(row=6, column=0, columnspan=3, sticky="news", padx=20, pady=5)
 
 delete_button = tkinter.Button(frame, text="Ta bort", command=remove_url)
 delete_button.grid(row=7, column=0, columnspan=3, sticky="news", padx=20, pady=5)
+
+default_button = tkinter.Button(frame, text="vanliga", command=default_list)
+default_button.grid(row=7, column=0, columnspan=3, sticky="news", padx=20, pady=5)
 
 Clear_button = tkinter.Button(frame, text="Ta bort allt", command=clear_all)
 Clear_button.grid(row=8, column=0, columnspan=3, sticky="news", padx=20, pady=5)
