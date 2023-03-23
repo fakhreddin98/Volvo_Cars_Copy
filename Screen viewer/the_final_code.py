@@ -128,7 +128,7 @@ def Start():
     print ("här är urls" ,urls)
     # Skapa en instans av webbläsaren Edge med hjälp av drivrutinen
     driver = webdriver.Edge(executable_path=edge_path)
-
+    driver.maximize_window()
     # Öppna den första webbadressen i listan i en flik
     driver.get(urls[0])
     delay = delays[0]
