@@ -1,4 +1,8 @@
 # Importera nödvändiga bibliotek för att skapa GUI och för att automatisera webbläsaren
+# pip install selenium måste installeras
+# https://msedgedriver.azureedge.net/111.0.1661.51/edgedriver_win64.zip
+
+
 import tkinter
 from tkinter import ttk
 import datetime
@@ -74,6 +78,8 @@ def Start():
     print ("här är urls" ,urls)
     # Skapa en instans av webbläsaren Edge med hjälp av drivrutinen
     driver = webdriver.Edge(executable_path=edge_path)
+    driver.maximize_window()
+
 
     # Öppna den första webbadressen i listan i en flik
     driver.get(urls[0])
