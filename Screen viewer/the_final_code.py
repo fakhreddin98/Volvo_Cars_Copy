@@ -1,8 +1,4 @@
 # Importera nödvändiga bibliotek för att skapa GUI och för att automatisera webbläsaren
-# pip install selenium måste installeras
-# https://msedgedriver.azureedge.net/111.0.1661.51/edgedriver_win64.zip
-
-
 import tkinter
 from tkinter import ttk
 import datetime
@@ -15,6 +11,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
+import pyautogui
 
 
 # Funktionen clear_item tar bort innehållet i delay_spinbox och Url_entry,
@@ -34,6 +31,7 @@ delay_list = []
 # Funktionen anropar sedan "clear_item" för att tömma inmatningsfälten i gränssnittet
 def add_item():
     Url = Url_entry.get()
+    Url = Url.replace(" ", "").replace("\n","")
     delay = int(delay_spinbox.get())
 
     urls = [Url, delay]
@@ -63,6 +61,35 @@ def remove_url():
 def clear_all():
     clear_item()    
     tree.delete(*tree.get_children())
+    global urls_lists, urls_list, delay_list
+    urls_lists = []
+    urls_list  = []
+    delay_list = []
+
+def scroll_to_bottom_and_back(driver):
+    # Hämta höjden på webbsidan och höjden av webbläsarfönstret
+    total_height = int(driver.execute_script("return document.body.scrollHeight"))
+    window_height = int(driver.execute_script("return window.innerHeight"))
+
+    # Bestäm hur mycket som ska scrollas per iteration
+    scroll_by = int(window_height / 100)
+
+    # Scrolla sidan långsamt genom att göra flera små scrollningar med mellanrum
+    scroll_count = 0
+    for i in range(0, total_height, scroll_by):
+        driver.execute_script(f"window.scrollTo(0, {i})")
+        scroll_count += 1
+        if scroll_count % 10 == 0:
+            time.sleep(10)
+        time.sleep(0.1)    
+    # Scrolla tillbaka till toppen av sidan när scrollningen är klar
+    driver.execute_script("window.scrollTo(0, 0)")
+
+
+def mouse_move():
+    # Flytta muspekaren 100 pixlar till höger och 100 pixlar nedåt
+    pyautogui.moveRel(10, 10)
+    pyautogui.moveRel(-10, -10)
 
 
 # Funktion för att öppna flera flikar och uppdatera en rapport på varje flik
@@ -78,8 +105,6 @@ def Start():
     print ("här är urls" ,urls)
     # Skapa en instans av webbläsaren Edge med hjälp av drivrutinen
     driver = webdriver.Edge(executable_path=edge_path)
-    driver.maximize_window()
-
 
     # Öppna den första webbadressen i listan i en flik
     driver.get(urls[0])
@@ -101,7 +126,7 @@ def Start():
         # Välj nästa flik i listan med flikhandtag
         current_tab = (current_tab + 1) % len(tab_handles)
         driver.switch_to.window(tab_handles[current_tab])
-
+        mouse_move()
         try:
             # Vänta i upp till 10 sekunder på att uppdateringsknappen blir klickbar
             refresh_button = WebDriverWait(driver, 1).until(EC.element_to_be_clickable((By.ID, "reportAppBarRefreshBtn")))
@@ -113,6 +138,7 @@ def Start():
 
         except:
             # Om uppdateringsknappen inte blir klickbar, vänta i 'delay' sekunder innan nästa försök
+            scroll_to_bottom_and_back(driver)
             time.sleep(delays[current_tab])
             # Fortsätt till nästa iteration av loopen
             continue
