@@ -204,7 +204,7 @@ start_button.grid(row=6, column=0, columnspan=3, sticky="news", padx=20, pady=5)
 delete_button = tkinter.Button(frame, text="Ta bort", command=remove_url)
 delete_button.grid(row=7, column=0, columnspan=3, sticky="news", padx=20, pady=5)
 
-default_button = tkinter.Button(frame, text="vanliga", command=default_list)
+default_button = tkinter.Button(frame, text="Standard webbsidor", command=default_list)
 default_button.grid(row=7, column=0, columnspan=3, sticky="news", padx=20, pady=5)
 
 Clear_button = tkinter.Button(frame, text="Ta bort allt", command=clear_all)
