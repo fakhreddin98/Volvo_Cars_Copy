@@ -1,4 +1,8 @@
 # Importera nödvändiga bibliotek för att skapa GUI och för att automatisera webbläsaren
+# pip install requests
+# pip install selenium
+# pip install pyautogui
+
 import tkinter
 from tkinter import ttk
 from selenium import webdriver
@@ -8,9 +12,21 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 import pyautogui
+import requests
 
 # Förhindra viloläge
 pyautogui.FAILSAFE = False
+
+# URL till råa innehållet i textfilen på GitHub
+
+text = 'https://raw.githubusercontent.com/fakhreddin98/Volvo_Cars_projects/main/Screen%20viewer/links.txt'
+response = requests.get(text)
+link_lines = response.text.strip().split('\n')
+
+delay_txt = "https://raw.githubusercontent.com/fakhreddin98/Volvo_Cars_projects/main/Screen%20viewer/delay.txt"
+response = requests.get(delay_txt)
+dealy_lines = response.text.strip().split('\n')
+
 
 
 # Funktionen clear_item tar bort innehållet i delay_spinbox och Url_entry,
@@ -71,16 +87,8 @@ def clear_all():
 
 def default_list():
     global urls_lists, urls_list, delay_list, urls
-    # Öppna textfilen och läs in länkarna
-    with open('delay.txt', 'r') as f:
-        dealy_lines = f.readlines()
-        dealy_lines = [line.strip() for line in dealy_lines]
 
-    with open('links.txt', 'r') as f:
-        link_lines = f.readlines()
-        link_lines = [line.strip() for line in link_lines]
 
-    # Skapa en lista med länkarna och delay-tider
     urls_lists = []
     urls_list  = []
     delay_list = []
