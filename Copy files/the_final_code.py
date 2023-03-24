@@ -13,13 +13,15 @@
 
 # Om du vill ändra var filerna ska flyttas till, kan du redigera raden där mappen drive_folder skapas:
 
+# Tex:
+
 # Från:
 # desktop_path = os.path.join(os.environ['USERPROFILE'], 'Desktop', 'testing')
 # drive_folder = os.path.join(desktop_path, volume_info[0], shift_str, date_str, f"Kl {time_str}")
 
 # Till:
-# destination_path = "D:\\Backup"
-# drive_folder = os.path.join(destination_path, volume_info[0], shift_str, date_str, f"Kl {time_str}")
+# destination_path = dest_parent_folder = r'\\gbw9061108.got.volvocars.net\PROJ\9413-Shr-vcc04900\Fakhreddin'
+# drive_folder = os.path.join(dest_parent_folder)
 
 # Koden är gjort av Fakhreddin kabawe
 # Om du behöver hjälp med koden, kontakta mig på [fakhreddin.kabawe@icloud.com] Eller på [+46721270123]
@@ -134,8 +136,9 @@ while True:
             items = os.listdir(source_folder)
             # Om det finns filer, skapas en mapp på skrivbordet och filerna flyttas dit
             if items:
+                dest_parent_folder = r'\\gbw9061109.got.volvocars.net\PROJ2\9413-SHR-VCC127500\MEP2\Hällered'
                 desktop_path = os.path.join(os.environ['USERPROFILE'], 'Desktop', 'testing')
-                drive_folder = os.path.join(desktop_path)
+                drive_folder = os.path.join(dest_parent_folder)
                 os.makedirs(drive_folder, exist_ok=True)
 #                move_files(drive_folder, source_folder)
                 move_files(source_folder, drive_folder)
