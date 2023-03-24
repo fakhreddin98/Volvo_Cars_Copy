@@ -26,6 +26,11 @@ link_lines = response.text.strip().split('\n')
 delay_txt = "https://raw.githubusercontent.com/fakhreddin98/Volvo_Cars_projects/main/Screen%20viewer/delay.txt"
 response = requests.get(delay_txt)
 dealy_lines = response.text.strip().split('\n')
+pyautogui.FAILSAFE = False
+
+def move_mouse():
+    pyautogui.moveTo(150, 150, duration=2)
+    pyautogui.moveTo(200, 200, duration=2)
 
 
 
@@ -140,6 +145,7 @@ def Start():
         # Välj nästa flik i listan med flikhandtag
         current_tab = (current_tab + 1) % len(tab_handles)
         driver.switch_to.window(tab_handles[current_tab])
+        move_mouse()
         try:
             # Vänta i upp till 10 sekunder på att uppdateringsknappen blir klickbar
             refresh_button = WebDriverWait(driver, 1).until(EC.element_to_be_clickable((By.ID, "reportAppBarRefreshBtn")))
@@ -151,6 +157,7 @@ def Start():
 
         except:
             # Om uppdateringsknappen inte blir klickbar, vänta i 'delay' sekunder innan nästa försök
+            
             time.sleep(delays[current_tab])
             # Fortsätt till nästa iteration av loopen
             continue
