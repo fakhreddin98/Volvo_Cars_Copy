@@ -10,8 +10,13 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import win32api
 import time
 import pyautogui
+import os
+
+# Förhindra viloläge
+win32api.SetThreadExecutionState(0x80000002)
 
 
 # Funktionen clear_item tar bort innehållet i delay_spinbox och Url_entry,
@@ -72,47 +77,30 @@ def clear_all():
 
 def default_list():
     global urls_lists, urls_list, delay_list, urls
+    # Öppna textfilen och läs in länkarna
+    with open('delay.txt', 'r') as f:
+        dealy_lines = f.readlines()
+        dealy_lines = [line.strip() for line in dealy_lines]
 
-    urls_lists =[
-                    ["https://jira-vira.volvocars.biz/secure/Dashboard.jspa?selectPageId=62405#", 10],
-                    ["https://app.powerbi.com/groups/me/apps/c7ad8b88-4322-4f17-a072-ca26bd3e7e92/reports/02d85ff0-bcc3-49df-a65e-40850b8b1fc8/ReportSectiona8d51c35a997c2053410?ctid=81fa766e-a349-4867-8bf4-ab35e250a08f", 10],
-                    ["https://app.powerbi.com/groups/me/apps/c7ad8b88-4322-4f17-a072-ca26bd3e7e92/reports/02d85ff0-bcc3-49df-a65e-40850b8b1fc8/ReportSection3e46342d2f1ccbe3342a?ctid=81fa766e-a349-4867-8bf4-ab35e250a08f", 10]
-                ]
+    with open('links.txt', 'r') as f:
+        link_lines = f.readlines()
+        link_lines = [line.strip() for line in link_lines]
 
-    urls_list = [  
-                    "https://jira-vira.volvocars.biz/secure/Dashboard.jspa?selectPageId=62405#",
-                    "https://app.powerbi.com/groups/me/apps/c7ad8b88-4322-4f17-a072-ca26bd3e7e92/reports/02d85ff0-bcc3-49df-a65e-40850b8b1fc8/ReportSectiona8d51c35a997c2053410?ctid=81fa766e-a349-4867-8bf4-ab35e250a08f",
-                    "https://app.powerbi.com/groups/me/apps/c7ad8b88-4322-4f17-a072-ca26bd3e7e92/reports/02d85ff0-bcc3-49df-a65e-40850b8b1fc8/ReportSection3e46342d2f1ccbe3342a?ctid=81fa766e-a349-4867-8bf4-ab35e250a08f"
-                ]
-    delay_list = [10, 10 ,10]
+    # Skapa en lista med länkarna och delay-tider
+    urls_lists = []
+    urls_list  = []
+    delay_list = []
+    for delay in dealy_lines:
+        for link in link_lines:
+            urls_lists.append([link, delay])
+            urls_list.append(link)
+            delay_list.append(delay)
+
+    # Lägg till länkarna i trädet
     for urls in urls_lists:
         tree.insert('', 0, values=urls)
 
 
-def scroll_to_bottom_and_back(driver):
-    # Hämta höjden på webbsidan och höjden av webbläsarfönstret
-    total_height = int(driver.execute_script("return document.body.scrollHeight"))
-    window_height = int(driver.execute_script("return window.innerHeight"))
-
-    # Bestäm hur mycket som ska scrollas per iteration
-    scroll_by = int(window_height / 100)
-
-    # Scrolla sidan långsamt genom att göra flera små scrollningar med mellanrum
-    scroll_count = 0
-    for i in range(0, total_height, scroll_by):
-        driver.execute_script(f"window.scrollTo(0, {i})")
-        scroll_count += 1
-        if scroll_count % 10 == 0:
-            time.sleep(10)
-        time.sleep(0.1)    
-    # Scrolla tillbaka till toppen av sidan när scrollningen är klar
-    driver.execute_script("window.scrollTo(0, 0)")
-
-
-def mouse_move():
-    # Flytta muspekaren 100 pixlar till höger och 100 pixlar nedåt
-    pyautogui.moveRel(10, 10)
-    pyautogui.moveRel(-10, -10)
 
 
 # Funktion för att öppna flera flikar och uppdatera en rapport på varje flik
@@ -124,6 +112,7 @@ def Start():
     
     # Ange sökvägen till Edge-webbläsarens drivrutin
     edge_path = r"C:\Users\fkabawe\Documents\msedgedriver.exe"
+    
     # Skriv ut webbadresserna som är sparade i listan 'urls'
     print ("här är urls" ,urls)
     # Skapa en instans av webbläsaren Edge med hjälp av drivrutinen
@@ -149,7 +138,6 @@ def Start():
         # Välj nästa flik i listan med flikhandtag
         current_tab = (current_tab + 1) % len(tab_handles)
         driver.switch_to.window(tab_handles[current_tab])
-        mouse_move()
         try:
             # Vänta i upp till 10 sekunder på att uppdateringsknappen blir klickbar
             refresh_button = WebDriverWait(driver, 1).until(EC.element_to_be_clickable((By.ID, "reportAppBarRefreshBtn")))
@@ -161,7 +149,6 @@ def Start():
 
         except:
             # Om uppdateringsknappen inte blir klickbar, vänta i 'delay' sekunder innan nästa försök
-            scroll_to_bottom_and_back(driver)
             time.sleep(delays[current_tab])
             # Fortsätt till nästa iteration av loopen
             continue
