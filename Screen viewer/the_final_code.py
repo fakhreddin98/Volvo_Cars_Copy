@@ -1,22 +1,16 @@
 # Importera nödvändiga bibliotek för att skapa GUI och för att automatisera webbläsaren
 import tkinter
 from tkinter import ttk
-import datetime
-from tkinter import messagebox
-import tkinter as tk
-import threading
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import win32api
 import time
 import pyautogui
-import os
 
 # Förhindra viloläge
-win32api.SetThreadExecutionState(0x80000002)
+pyautogui.FAILSAFE = False
 
 
 # Funktionen clear_item tar bort innehållet i delay_spinbox och Url_entry,
