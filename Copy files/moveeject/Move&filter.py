@@ -27,32 +27,32 @@ import subprocess
 
 #Funktionen move_files flyttar filer från en källmapp till en målmapp baserat på filtyp.
 
-
+'''
+Denna funktion flyttar filer från en källmapp till en destinationmapp baserat på filtypen. 
+Funktionen räknar först antalet filer i källmappen, skapar sedan en destinationmapp och flyttar sedan filerna enligt deras filtyp.
+För varje fil kontrolleras filtypen genom att kontrollera filändelsen med hjälp av os.path.splitext(). 
+Om filen har en ".rar" eller ".zip" filändelse, flyttas den till en annan mapp med hjälp av en separat funktion move_zip_file().
+Om filen har ".mf4" eller ".dat" filändelse flyttas den till en annan mapp med hjälp av move_mf4_file(). 
+Alla andra filer flyttas till en annan mapp med hjälp av move_else_file().
+För varje flyttad fil skrivs en beskrivning av filen till konsolen, t.ex. "Flyttade filen 1/10: filnamn.txt". 
+När alla filer har flyttats, tas tomma mappar i källmappen bort och ett meddelande skrivs ut till konsolen för 
+att informera användaren om att flyttningen är klar och enheten kan tas bort.
+Detta är en användbar funktion för att organisera och flytta filer från en mapp till en annan baserat på filtyp. 
+Funktionen kan användas för att flytta filer från en enhet till en annan eller för att organisera filer på en dator.
+'''
 def move_files(source_folder, dest_parent_folder):
-
-    """
-    Funktionen move_files flyttar filer från en källmapp till en målmapp baserat på filtyp.
-    dest_folder_name är namnet på målmappen som ska skapas i den överordnade målmappen dest_parent_folder, baserat på namnet på källmappen.
-    os.makedirs används för att skapa målmappen och dess överordnade mappar om de inte redan finns.
-    os.listdir används för att hämta en lista över filer och mappar i källmappen.
-    Om filen är en mapp, flyttas filerna i den mappen rekursivt till motsvarande målmapp baserat på filtyp.
-    Om filen är en fil, används os.path.splitext för att få filtypen och lower för att göra filtypen i små bokstäver.
-    Om filtypen är .rar eller .zip flyttas filen med funktionen move_zip_file.
-    Om filtypen är .mf4 eller .mf4 flyttas filen med funktionen move_mf4_file.
-    Annars flyttas filen med funktionen move_else_file.
-    En utskrift sker för varje fil som flyttas.
-    Funktionen remove_empty_folders används för att ta bort tomma mappar i källmappen efter att alla filer har flyttats.
-    """
-
-    dest_folder_name = os.path.splitext(os.path.basename(source_folder))[0].split('_')[0]
-    dest_folder = os.path.join(dest_parent_folder, dest_folder_name)
+    total_files = 0
+    num_files = 0
+    
+    for root, dirs, files in os.walk(source_folder):
+        total_files += len(files)
+    
+    dest_folder = os.path.join(dest_parent_folder)
     os.makedirs(dest_folder, exist_ok=True)
 
-    for item in os.listdir(source_folder):
-        source_item = os.path.join(source_folder, item)
-        if os.path.isdir(source_item):
-            move_files(source_item, dest_folder)
-        elif os.path.isfile(source_item):
+    for root, dirs, files in os.walk(source_folder):
+        for item in files:
+            source_item = os.path.join(root, item)
             extension = os.path.splitext(item)[1].lower()
 
             if extension in ('.rar', '.zip'):
@@ -64,9 +64,15 @@ def move_files(source_folder, dest_parent_folder):
             else:
                 move_else_file(source_item)
 
-            print(f"Filen flyttad: {item}")
-
+            num_files += 1
+            if num_files != total_files:
+                print(f"{num_files}/{total_files} Ta inte bort {volume_info[0]}, Flyttade filen : {item[:20]}")
+    
     remove_empty_folders(source_folder)
+
+    if num_files == total_files:
+        print(f"\nAlla filer har nu flyttats från {volume_info[0]} till destinationmappen. \nDu kan nu tryggt ta bort  {volume_info[0]}  :)")
+
 
 def move_zip_file(source_item):
     """
@@ -105,18 +111,26 @@ def move_else_file(source_item):
     dest_item = os.path.join(else_folder, os.path.basename(source_item))
     shutil.move(source_item, dest_item)
 
-
 def remove_empty_folders(folder):
     """
     Tar bort tomma undermappar i en mapp.
     """
-    for item in os.listdir(folder):
-        item_path = os.path.join(folder, item)
-        if os.path.isdir(item_path) and not os.listdir(item_path):
+    if not os.path.exists(folder) or not os.path.isdir(folder):
+        return
+
+    for root, dirs, files in os.walk(folder, topdown=False):
+        for dir_name in dirs:
+            full_dir_path = os.path.join(root, dir_name)
             try:
-                os.rmdir(item_path)
-            except Exception as e:
-                print(e)
+                os.rmdir(full_dir_path)
+            except OSError:
+                pass
+
+    try:
+        os.rmdir(folder)
+        print(f"Removed empty directory: {folder}")
+    except OSError:
+        pass
 
 
 
@@ -145,7 +159,7 @@ if __name__ == '__main__':
                 # Hämtar information om enheten och skriver ut dess namn            
                 volume_info = win32api.GetVolumeInformation(new_drive + ':\\')
                 print(f"Hittade enhet: {volume_info[0]}")
-                if '_VPT_PLOPP' in volume_info[0] or '_ata' in volume_info[0]:
+                if '_VPT_PLOPP' in volume_info[0] or '_ATA' in volume_info[0]:
                     # Sätter sökvägen till enheten och listar alla filer i sökvägen
                     source_folder = new_drive + ':\\'
                     items = os.listdir(source_folder)
