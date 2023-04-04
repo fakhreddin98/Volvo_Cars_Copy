@@ -24,6 +24,7 @@ import shutil             # Importerar funktioner för att hantera filer och map
 import win32api           # Importerar funktioner för att interagera med Windows-API:et
 import time               # Importerar funktioner för att hantera tid och vänta mellan operationer
 import subprocess
+import glob
 
 #Funktionen move_files flyttar filer från en källmapp till en målmapp baserat på filtyp.
 
@@ -67,14 +68,13 @@ def move_files(source_folder, dest_parent_folder):
             num_files += 1
             if num_files != total_files + 1:
                 print(f"{num_files}/{total_files} Ta inte bort {volume_info[0]}, Flyttade filen : {item[:20]}")
-                os.remove(source_item)
 
     
-   # remove_empty_folders(source_folder)
+    remove_empty_folders(source_folder)
 
     if num_files + 1 == total_files + 1:
         print(f"\nAlla filer har nu flyttats från {volume_info[0]} till destinationmappen. \nDu kan nu tryggt ta bort  {volume_info[0]}  :) \n")
-
+        remove_everything_from_folder(source_folder)
 
 def move_zip_file(source_item):
     """
@@ -86,21 +86,14 @@ def move_zip_file(source_item):
     Ingen utskrift görs i denna funktion.
     """
 
+    folder_name_zip = os.path.splitext(os.path.basename(volume_info[0]))[0].split('_')[0]
 
     zip_folder = os.path.join(r"C:\Users\E9439007\OneDrive - Volvo Cars\Loggfiler\IHU\Automated IHU Logs - All Vehicles")
+    #zip_folder = os.path.join(r"C:\Users\fakhe\Desktop\testing\zip", folder_name_zip)
     os.makedirs(zip_folder, exist_ok=True)
     dest_item = os.path.join(zip_folder, os.path.basename(source_item))
-    while True:
-        try:
-            shutil.move(source_item, dest_item)
-            break
-        except OSError as e:
-            if e.errno == 32: # If the error is due to the file being in use
-                print("File is in use. Retrying in 1 seconds...")
-                time.sleep(1) # Wait for 5 seconds before retrying
-            else:
-                # Reraise the exception if it is not due to the file being in use
-                raise e
+    shutil.copy2(source_item, dest_item)
+
 
 def move_mf4_file(source_item):
     """
@@ -111,17 +104,9 @@ def move_mf4_file(source_item):
     mf4_folder = os.path.join(r"\\gbw9061109.got.volvocars.net\PROJ2\9413-SHR-VCC127500\MEP2\Hällered\New folder", folder_name_mf4 , 'data')
     os.makedirs(mf4_folder, exist_ok=True)
     dest_item = os.path.join(mf4_folder, os.path.basename(source_item))
-    while True:
-        try:
-            shutil.move(source_item, dest_item)
-            break
-        except OSError as e:
-            if e.errno == 32: # If the error is due to the file being in use
-                print("File is in use. Retrying in 1 seconds...")
-                time.sleep(1) # Wait for 5 seconds before retrying
-            else:
-                # Reraise the exception if it is not due to the file being in use
-                raise e
+    shutil.copy2(source_item, dest_item)
+
+
 def move_else_file(source_item):
     """
     samma som förra men till alla filer som inte är mf4, dat, zip eller rar
@@ -129,19 +114,8 @@ def move_else_file(source_item):
     else_folder = os.path.join(r"\\gbw9061109.got.volvocars.net\PROJ2\9413-SHR-VCC127500\MEP2\Hällered\New folder\else", volume_info[0] , 'else')
     os.makedirs(else_folder, exist_ok=True)
     dest_item = os.path.join(else_folder, os.path.basename(source_item))
-    while True:
-        try:
-            shutil.move(source_item, dest_item)
-            break
-        except OSError as e:
-            if e.errno == 32: # If the error is due to the file being in use
-                print("File is in use. Retrying in 1 seconds...")
-                time.sleep(1) # Wait for 5 seconds before retrying
-            else:
-                # Reraise the exception if it is not due to the file being in use
-                raise e
-        
-    
+    shutil.copy2(source_item, dest_item)
+
 def remove_empty_folders(folder):
     """
     Tar bort tomma undermappar i en mapp.
@@ -163,6 +137,15 @@ def remove_empty_folders(folder):
     except OSError:
         pass
 
+def remove_everything_from_folder(source_folder):
+    # remove all files in the directory
+    for file_name in os.listdir(source_folder):
+        file_path = os.path.join(source_folder, file_name)
+        try:
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+        except Exception as e:
+            print(e)
 
 
 if __name__ == '__main__':
