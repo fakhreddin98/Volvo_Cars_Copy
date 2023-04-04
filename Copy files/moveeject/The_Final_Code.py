@@ -17,7 +17,7 @@
 # win32api är inte installerad på alla datorer av sig själv och "pip install pywin32" behöver köras
 # Koden flyttar bort filerna om man vill att den ska kopiera filerna då ska man byta "shutil.move" till "shutil.copy2"
 # Och ta bort koden som ta bort mapparna.
-
+# [WinError 32] The process cannot access the file because it is being used by another process: 'J:\\bugreport-Jarmo@2023-04-03_20-41-31-SXCSTF.zip'
 
 import os                 # Importerar funktioner för att interagera med operativsystemet
 import shutil             # Importerar funktioner för att hantera filer och mappar
@@ -65,13 +65,15 @@ def move_files(source_folder, dest_parent_folder):
                 move_else_file(source_item)
 
             num_files += 1
-            if num_files != total_files:
+            if num_files != total_files + 1:
                 print(f"{num_files}/{total_files} Ta inte bort {volume_info[0]}, Flyttade filen : {item[:20]}")
-    
-    remove_empty_folders(source_folder)
+                os.remove(source_item)
 
-    if num_files == total_files:
-        print(f"\nAlla filer har nu flyttats från {volume_info[0]} till destinationmappen. \nDu kan nu tryggt ta bort  {volume_info[0]}  :)")
+    
+   # remove_empty_folders(source_folder)
+
+    if num_files + 1 == total_files + 1:
+        print(f"\nAlla filer har nu flyttats från {volume_info[0]} till destinationmappen. \nDu kan nu tryggt ta bort  {volume_info[0]}  :) \n")
 
 
 def move_zip_file(source_item):
@@ -88,8 +90,17 @@ def move_zip_file(source_item):
     zip_folder = os.path.join(r"C:\Users\E9439007\OneDrive - Volvo Cars\Loggfiler\IHU\Automated IHU Logs - All Vehicles")
     os.makedirs(zip_folder, exist_ok=True)
     dest_item = os.path.join(zip_folder, os.path.basename(source_item))
-    shutil.move(source_item, dest_item)
-
+    while True:
+        try:
+            shutil.move(source_item, dest_item)
+            break
+        except OSError as e:
+            if e.errno == 32: # If the error is due to the file being in use
+                print("File is in use. Retrying in 1 seconds...")
+                time.sleep(1) # Wait for 5 seconds before retrying
+            else:
+                # Reraise the exception if it is not due to the file being in use
+                raise e
 
 def move_mf4_file(source_item):
     """
@@ -100,9 +111,17 @@ def move_mf4_file(source_item):
     mf4_folder = os.path.join(r"\\gbw9061109.got.volvocars.net\PROJ2\9413-SHR-VCC127500\MEP2\Hällered\New folder", folder_name_mf4 , 'data')
     os.makedirs(mf4_folder, exist_ok=True)
     dest_item = os.path.join(mf4_folder, os.path.basename(source_item))
-    shutil.move(source_item, dest_item)
-
-
+    while True:
+        try:
+            shutil.move(source_item, dest_item)
+            break
+        except OSError as e:
+            if e.errno == 32: # If the error is due to the file being in use
+                print("File is in use. Retrying in 1 seconds...")
+                time.sleep(1) # Wait for 5 seconds before retrying
+            else:
+                # Reraise the exception if it is not due to the file being in use
+                raise e
 def move_else_file(source_item):
     """
     samma som förra men till alla filer som inte är mf4, dat, zip eller rar
@@ -110,8 +129,19 @@ def move_else_file(source_item):
     else_folder = os.path.join(r"\\gbw9061109.got.volvocars.net\PROJ2\9413-SHR-VCC127500\MEP2\Hällered\New folder\else", volume_info[0] , 'else')
     os.makedirs(else_folder, exist_ok=True)
     dest_item = os.path.join(else_folder, os.path.basename(source_item))
-    shutil.move(source_item, dest_item)
-
+    while True:
+        try:
+            shutil.move(source_item, dest_item)
+            break
+        except OSError as e:
+            if e.errno == 32: # If the error is due to the file being in use
+                print("File is in use. Retrying in 1 seconds...")
+                time.sleep(1) # Wait for 5 seconds before retrying
+            else:
+                # Reraise the exception if it is not due to the file being in use
+                raise e
+        
+    
 def remove_empty_folders(folder):
     """
     Tar bort tomma undermappar i en mapp.
@@ -178,4 +208,4 @@ if __name__ == '__main__':
                     print(f"{volume_info[0]} innehåller inte '_VPT_PLOPP eller Info_Logs'.")
 
             except Exception as e:
-                print()
+                print(e)
