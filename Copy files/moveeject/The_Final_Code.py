@@ -146,7 +146,8 @@ def remove_everything_from_folder(source_folder):
                 os.remove(file_path)
         except Exception as e:
             print(e)
-
+            time.sleep(0.5)
+            remove_everything_from_folder(source_folder)
 
 if __name__ == '__main__':
     # connected_drives är en mängd som innehåller enhetsbokstäverna för alla anslutna enheter.
