@@ -145,8 +145,8 @@ def remove_everything_from_folder(source_folder):
             if os.path.isfile(file_path):
                 os.remove(file_path)
         except Exception as e:
-            print(e)
-            time.sleep(0.5)
+            print("kunde inte ta bort alla filer försöker igen om 1 sekund")
+            time.sleep(1)
             remove_everything_from_folder(source_folder)
 
 if __name__ == '__main__':
