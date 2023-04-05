@@ -63,7 +63,7 @@ from selenium.webdriver.edge.service import Service  # för att starta Microsoft
 from selenium.webdriver.edge.options import Options  # för att konfigurera inställningar för Edge
 import time  # för att lägga till väntetider i koden
 import requests  # för att skicka HTTP-begäran och ta emot svar från en webbserver
-import re
+from selenium.webdriver.common.keys import Keys
 
 
 # Hämta länkarna från en textfil på GitHub
@@ -181,14 +181,14 @@ def Start():
         driver.switch_to.window(tab_handles[current_tab])
         scroll_to_bottom_and_back(driver)
         try:
-            # find the button by its ID
+            # hitta knappen
             button = driver.find_element(By.ID, "app-nav-toggle")
 
-            # get the value of the aria-expanded attribute
+            # titta på om nav toggle är öppen eller stängd
             aria_expanded = button.get_attribute("aria-expanded")
 
-            # click the button if aria-expanded is false
-            if aria_expanded == "false":
+            # tryck på knappen ifall detä r öppet
+            if aria_expanded == "true":
                 ActionChains(driver).move_to_element(button).click(button).perform()
             time.sleep(delays[current_tab])
 
