@@ -85,18 +85,7 @@ delay_list = []
 def scroll_to_bottom_and_back(driver):
     # Hämta höjden på webbsidan och höjden av webbläsarfönstret
     total_height = int(driver.execute_script("return document.body.scrollHeight"))
-
-    driver.execute_script("window.scrollTo(0, %d);" % (total_height * 0.225))
-
-    # Scrolla sidan långsamt genom att göra flera små scrollningar med mellanrum
-   # scroll_count = 0
-    #for i in range(0, total_height, scroll_by):
-     #   scroll_count += 1
-      #  if scroll_count % 99 == 0:
-       #     time.sleep(1)
-        #time.sleep(0.1)    
-    # Scrolla tillbaka till toppen av sidan när scrollningen är klar
-#    driver.execute_script("window.scrollTo(0, 0)")
+    driver.execute_script("window.scrollTo(0, %d);" % (total_height * 0.2))
 
 # Funktion som rensar inputfälten
 def clear_item():
@@ -187,7 +176,7 @@ def Start():
             # titta på om nav toggle är öppen eller stängd
             aria_expanded = button.get_attribute("aria-expanded")
 
-            # tryck på knappen ifall detä r öppet
+            # tryck på knappen ifall det är öppet
             if aria_expanded == "true":
                 ActionChains(driver).move_to_element(button).click(button).perform()
             time.sleep(delays[current_tab])
