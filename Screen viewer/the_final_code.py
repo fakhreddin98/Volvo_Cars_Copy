@@ -63,6 +63,7 @@ from selenium.webdriver.edge.service import Service  # för att starta Microsoft
 from selenium.webdriver.edge.options import Options  # för att konfigurera inställningar för Edge
 import time  # för att lägga till väntetider i koden
 import requests  # för att skicka HTTP-begäran och ta emot svar från en webbserver
+import re
 
 
 # Hämta länkarna från en textfil på GitHub
@@ -116,20 +117,16 @@ def add_item():
 
     clear_item()
 
-# Funktion som tar bort valda länkar från trädet och från listorna
-def remove_url():
-    selection = tree.selection()
-    if selection:
-        for item in selection:
-            index = int(item.split('I')[-1]) - 1
-            tree.delete(item)
-            del urls_list[index]
-            del delay_list[index]
 
 # Funktion som rensar trädet och listorna samt inputfälten
 def clear_all():
     global urls_lists, urls_list, delay_list
+    clear_item()
+    tree.delete(*tree.get_children())
 
+    print(urls_lists)    
+    print(urls_list)
+    print(delay_list)
     urls_lists = []    
     urls_list  = []
     delay_list = []
@@ -162,9 +159,9 @@ def Start():
     urls = urls_list
     delays = [int(delay) for delay in delay_list] # antar att delay_list är en lista med förseningar för varje URL i urls_list
 
-    edge_path = r"C:\Users\kkpi1\Downloads\edgedriver_win64\Driver_Notes\msedgedriver.exe"
+    edge_path = r"C:\Users\fkabawe\Documents\msedgedriver.exe"
     edge_options = Options()
-    edge_options.add_argument('user-data-dir=C:\\Users\\kkpi1\\AppData\\Local\\Microsoft\\Edge\\User Data')
+    edge_options.add_argument('user-data-dir=C:\\Users\\fakhe\\AppData\\Local\\Microsoft\\Edge\\User Data')
     edge_options.add_argument('--start-maximized')
 
     driver = webdriver.Edge(service=Service(executable_path=edge_path), options=edge_options)
@@ -183,6 +180,21 @@ def Start():
         current_tab = (current_tab + 1) % len(tab_handles)
         driver.switch_to.window(tab_handles[current_tab])
         scroll_to_bottom_and_back(driver)
+        try:
+            # find the button by its ID
+            button = driver.find_element(By.ID, "app-nav-toggle")
+
+            # get the value of the aria-expanded attribute
+            aria_expanded = button.get_attribute("aria-expanded")
+
+            # click the button if aria-expanded is false
+            if aria_expanded == "false":
+                ActionChains(driver).move_to_element(button).click(button).perform()
+            time.sleep(delays[current_tab])
+
+        except:
+            time.sleep(delays[current_tab])
+            continue
 
         try:
             refresh_button = WebDriverWait(driver, 1).until(EC.element_to_be_clickable((By.ID, "reportAppBarRefreshBtn")))
@@ -236,17 +248,13 @@ tree.grid(row=5, column=0, columnspan=3, padx=20, pady=10)
 start_button = tkinter.Button(frame, text="Börja visningen", command=Start)
 start_button.grid(row=6, column=0, columnspan=3, sticky="news", padx=20, pady=5)
 
-# Skapa en knapp för att ta bort en URL och placera den i ramen
-delete_button = tkinter.Button(frame, text="Ta bort", command=remove_url)
-delete_button.grid(row=7, column=0, columnspan=3, sticky="news", padx=20, pady=5)
-
 # Skapa en knapp för att ladda standard webbsidor och placera den i ramen
 default_button = tkinter.Button(frame, text="Standard webbsidor", command=default_list)
-default_button.grid(row=8, column=0, columnspan=3, sticky="news", padx=20, pady=5)
+default_button.grid(row=7, column=0, columnspan=3, sticky="news", padx=20, pady=5)
 
 # Skapa en knapp för att ta bort alla URL:er och placera den i ramen
-Clear_button = tkinter.Button(frame, text="Ta bort allt", command=clear_all)
-Clear_button.grid(row=9, column=0, columnspan=3, sticky="news", padx=20, pady=5)
+Clear_button = tkinter.Button(frame, text="Rensa listan", command=clear_all)
+Clear_button.grid(row=8, column=0, columnspan=3, sticky="news", padx=20, pady=5)
 
 # Startar koden
 window.mainloop()
