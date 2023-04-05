@@ -59,7 +59,7 @@ from selenium.webdriver.common.action_chains import ActionChains  # för att utf
 from selenium.webdriver.common.by import By  # för att identifiera element på sidan
 from selenium.webdriver.support.ui import WebDriverWait  # för att vänta på att vissa villkor uppfylls
 from selenium.webdriver.support import expected_conditions as EC  # för att specificera villkor som ska uppfyllas
-from selenium.webdriver.edge.service import Service  # för att starta Microsoft Edge webbläsarens service
+from selenium.webdriver.edge.service import Service  # för att starta Microsoft webbläsarens service
 from selenium.webdriver.edge.options import Options  # för att konfigurera inställningar för Edge
 import time  # för att lägga till väntetider i koden
 import requests  # för att skicka HTTP-begäran och ta emot svar från en webbserver
@@ -159,9 +159,9 @@ def Start():
     urls = urls_list
     delays = [int(delay) for delay in delay_list] # antar att delay_list är en lista med förseningar för varje URL i urls_list
 
-    edge_path = r"C:\Users\fkabawe\Documents\msedgedriver.exe"
+    edge_path = r"C:\Users\kkpi1\Downloads\edgedriver_win64\Driver_Notes\msedgedriver.exe"
     edge_options = Options()
-    edge_options.add_argument('user-data-dir=C:\\Users\\fakhe\\AppData\\Local\\Microsoft\\Edge\\User Data')
+    edge_options.add_argument('user-data-dir=C:\\Users\\kkpi1\\AppData\\Local\\Microsoft\\Edge\\User Data')
     edge_options.add_argument('--start-maximized')
 
     driver = webdriver.Edge(service=Service(executable_path=edge_path), options=edge_options)
