@@ -1,54 +1,38 @@
 '''
-Denna kod är en Python-skript som skapar ett GUI-verktyg som används för att automatiskt öppna flera 
-flikar i en webbläsare och uppdatera dem med en viss tidsfördröjning.
-
-Koden importerar följande bibliotek: tkinter, ttk, selenium, time, pyautogui och requests. tkinter 
-och ttk används för att skapa GUI-verktyget, selenium används för att automatisera webbläsaren, 
-time används för att lägga till väntetider i koden, pyautogui används för att automatisera mus- och 
-tangentbordsåtgärder på datorn och requests används för att skicka HTTP-begäran och ta emot svar från en webbserver.
-
-Koden definierar också flera funktioner som används för att hantera händelser i GUI-verktyget. 
-Dessa funktioner inkluderar att lägga till och ta bort URL: er från en trädnavigationsfält 
-att rensa URL: er och att lägga till en standardlista med URL: er.
-
-Slutligen definieras en funktion för att starta processen med att öppna flera flikar i webbläsaren och uppdatera 
-dem med en viss tidsfördröjning. Den här funktionen öppnar en Microsoft Edge-webbläsare och går sedan igenom en lista 
-med URL: er, öppnar en ny flik för varje URL och uppdaterar fliken med jämna mellanrum.
-
-GUI-verktyget innehåller också en URL- och fördröjningsinmatningsruta för användaren att ange webbadresser och 
-tidsfördröjningar, samt knappar för att lägga till och ta bort URL: er och rensa listan.
-'''
-
-'''
 Instruktioner:
 
-    1- Installera följande bibliotek: tkinter, ttk, selenium, time, pyautogui och requests på datorn där koden kommer att köras.
+    Syftet med koden är att skapa ett GUI-verktyg som automatiserar öppningen av flera webbläsarflikar och byter mellan dem med en inställd tidsfördröjning. 
+    Detta kan vara till nytta för att visa statistik från flera webbplatser samtidigt och säkerställa att informationen alltid är uppdaterad.
 
-    2- Kopiera koden till en textredigerare och spara den som en Python-fil med ett lämpligt namn.
+    Koden är skriven i Python och använder flera bibliotek och moduler. 
+    För att köra koden på en dator behöver användaren installera vissa progrm
 
-        För att använda denna kod på en annan dator, följ dessa steg:
+    För att installera biblioteken kan användaren följa följande steg:
 
-            1. Ladda ner Edge-drivrutinerna från https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/.
+        1- Installera Python på datorn om det inte redan är installerat. Python kan laddas ner från https://www.python.org/downloads/ eller Microsoft Store.
 
-            2. Placera drivrutinsfilen på en lämplig plats och uppdatera sökvägen till drivrutinsfilen i raden:
-            edge_path("SÖKVÄG TILL EDGEDRIVER FIL")
+        2- Öppna kommandotolken på datorn. För Windows, tryck på Windows-tangenten och R samtidigt, skriv "cmd" och tryck på Enter.
 
-            3. Ändra sökvägen till datorns egna profil i raden:
-            edge_options.add_argument("user-data-dir=SÖKVÄG TILL PROFILEN")
+        3- Skriv följande kommando och tryck på Enter för att installera biblioteken: "pip install tkinter selenium requests".
+        
+        4-För att installera Microsoft Edge-drivrutinen, ladda ner drivrutinen från Microsofts webbplats för WebDriver 
+            (https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/) och välj versionen som motsvarar din webbläsare. 
+            Lägg till sökvägen till drivrutinen i "edge_path" variabeln.
 
-            4. Öppna en terminal och navigera till mappen där filen finns, kör sedan programmet med kommandot:
-            python FILENAME.py
+    Om en annan användare använder koden behöver "edge_options.add_argument('user-data-dir=C:\Users\ANVÄNDARE\AppData\Local\Microsoft\Edge\User Data')" 
+    ändras så att det står användarens användarnamn istället för "ANVÄNDARE".
 
-    4- När programmet startar, lägg till URL:er och deras fördröjningar genom att skriva URL:en i URL-inmatningsfältet
-    och välja önskad fördröjning i rullgardinsmenyn bredvid. Klicka sedan på "Lägg till URL" -knappen.
+    Koden definierar flera funktioner för att hantera händelser i GUI-verktyget, såsom att lägga till och ta bort URL:er 
+    från en trädnavigationsfält, att rensa URL:er och att lägga till en standardlista med URL:er. Dessutom definieras en 
+    funktion för att starta processen med att öppna flera flikar i webbläsaren och byta mellan dem med en inställd tidsfördröjning.
 
-    5- För att ta bort en URL från listan, välj URL:en i trädnavigationsfältet och klicka på "Ta bort URL" -knappen.
+    När programmet startar kan användaren lägga till URL:er och deras fördröjningar genom att skriva URL:en i 
+    URL-inmatningsfältet och välja önskad fördröjning i rullgardinsmenyn bredvid. Användaren kan sedan klicka på 
+    "Lägg till URL"-knappen för att lägga till URL:en i listan. För att rensa listan klickar användaren på "Rensa alla"-knappen. 
+    Slutligen kan användaren klicka på "Starta"-knappen för att öppna webbläsaren och visa de valda URL:erna i separata flikar med önskad fördröjning.
 
-    6- För att rensa listan, klicka på "Rensa alla" -knappen.
-
-    7- När du är nöjd med listan, klicka på "Starta" -knappen för att öppna webbläsaren och visa de valda URL:erna i separata flikar med önskad fördröjning.
-
-    8- om koden körs på en datorn har screen saver då kan det vara bra att ladda ner progrannet Caffeine på: https://www.zhornsoftware.co.uk/caffeine/#download
+    Det är värt att notera att om koden körs på en dator som har screen saver kan det vara lämpligt att ladda ner programmet 
+    Caffeine för att undvika att skärmsläckaren loggar ut användaren.
 '''
 
 # Importera nödvändiga bibliotek och moduler
