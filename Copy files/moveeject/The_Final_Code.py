@@ -23,8 +23,7 @@ import os                 # Importerar funktioner för att interagera med operat
 import shutil             # Importerar funktioner för att hantera filer och mappar
 import win32api           # Importerar funktioner för att interagera med Windows-API:et
 import time               # Importerar funktioner för att hantera tid och vänta mellan operationer
-import subprocess
-import glob
+
 
 #Funktionen move_files flyttar filer från en källmapp till en målmapp baserat på filtyp.
 
@@ -85,9 +84,6 @@ def move_zip_file(source_item):
     shutil.move används för att flytta filen från källmappen till zip-mappen.
     Ingen utskrift görs i denna funktion.
     """
-
-    folder_name_zip = os.path.splitext(os.path.basename(volume_info[0]))[0].split('_')[0]
-
     zip_folder = os.path.join(r"C:\Users\E9439007\OneDrive - Volvo Cars\Loggfiler\IHU\Automated IHU Logs - All Vehicles")
     #zip_folder = os.path.join(r"C:\Users\fakhe\Desktop\testing\zip", folder_name_zip)
     os.makedirs(zip_folder, exist_ok=True)
