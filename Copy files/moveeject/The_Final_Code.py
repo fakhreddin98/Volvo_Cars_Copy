@@ -23,7 +23,10 @@ import os                 # Importerar funktioner för att interagera med operat
 import shutil             # Importerar funktioner för att hantera filer och mappar
 import win32api           # Importerar funktioner för att interagera med Windows-API:et
 import time               # Importerar funktioner för att hantera tid och vänta mellan operationer
+import colorama
+from colorama import Fore, Style
 
+colorama.init()
 
 #Funktionen move_files flyttar filer från en källmapp till en målmapp baserat på filtyp.
 
@@ -66,13 +69,13 @@ def move_files(source_folder, dest_parent_folder):
 
             num_files += 1
             if num_files != total_files + 1:
-                print(f"{num_files}/{total_files} Ta inte bort {volume_info[0]}, Flyttade filen : {item[:20]}")
+                print(Fore.RED + f"Antal flyttade filer {num_files} av {total_files} Ta inte bort {volume_info[0]}, Flyttade filen : {item[:20]}")
 
     
     remove_empty_folders(source_folder)
 
     if num_files + 1 == total_files + 1:
-        print(f"\nAlla filer har nu flyttats från {volume_info[0]} till destinationmappen. \nDu kan nu tryggt ta bort  {volume_info[0]}  :) \n")
+        print(Fore.GREEN + f"\nAlla filer har nu flyttats från {volume_info[0]} till destinationmappen. \nDu kan nu tryggt ta bort  {volume_info[0]}  :) \n")
         remove_everything_from_folder(source_folder)
 
 def move_zip_file(source_item):
@@ -141,7 +144,7 @@ def remove_everything_from_folder(source_folder):
             if os.path.isfile(file_path):
                 os.remove(file_path)
         except Exception as e:
-            print("kunde inte ta bort alla filer försöker igen om 1 sekund")
+            print(Fore.RED + "kunde inte ta bort alla filer försöker igen om 1 sekund")
             time.sleep(1)
             remove_everything_from_folder(source_folder)
 
@@ -169,7 +172,7 @@ if __name__ == '__main__':
             try:
                 # Hämtar information om enheten och skriver ut dess namn            
                 volume_info = win32api.GetVolumeInformation(new_drive + ':\\')
-                print(f"Hittade enhet: {volume_info[0]}")
+                print(Fore.BLUE + f"Hittade enhet: {volume_info[0]}")
                 if '_VPT_PLOPP' in volume_info[0] or 'Info_Logs' in volume_info[0]:
                     # Sätter sökvägen till enheten och listar alla filer i sökvägen
                     source_folder = new_drive + ':\\'
@@ -185,7 +188,7 @@ if __name__ == '__main__':
                         # Om enheten inte innehåller "_Data" i volymnamnet, skrivs ett meddelande ut om det.
                         print("Inga filer att Flytta på enheten: " + new_drive)
                 else: 
-                    print(f"{volume_info[0]} innehåller inte '_VPT_PLOPP eller Info_Logs'.")
+                    print(Fore.BLUE + f"{volume_info[0]} innehåller inte '_VPT_PLOPP eller Info_Logs'.")
 
             except Exception as e:
                 print(e)
