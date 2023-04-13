@@ -14,12 +14,12 @@ from selenium.webdriver.common.keys import Keys
 
 
 # Hämta länkarna från en textfil på GitHub
-text = 'https://raw.githubusercontent.com/fakhreddin98/Volvo_Cars_projects/main/Screen%20viewer/links.txt'
+text = 'https://raw.githubusercontent.com/fakhreddin98/Volvo_Cars_projects/main/Live%20KPI%20slideshow%20script/links.txt'
 response = requests.get(text)
 link_lines = response.text.strip().split('\n')
 
 # Hämta fördröjningarna från en annan textfil på GitHub
-delay_txt = "https://raw.githubusercontent.com/fakhreddin98/Volvo_Cars_projects/main/Screen%20viewer/delay.txt"
+delay_txt = "https://raw.githubusercontent.com/fakhreddin98/Volvo_Cars_projects/main/Live%20KPI%20slideshow%20script/delay.txt"
 response = requests.get(delay_txt)
 dealy_lines = response.text.strip().split('\n')
 
