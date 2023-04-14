@@ -1,3 +1,56 @@
+'''
+Denna kod är en Python-skript som skapar ett GUI-verktyg som används för att automatiskt öppna flera 
+flikar i en webbläsare och uppdatera dem med en viss tidsfördröjning.
+
+Koden importerar följande bibliotek: tkinter, ttk, selenium, time, pyautogui och requests. tkinter 
+och ttk används för att skapa GUI-verktyget, selenium används för att automatisera webbläsaren, 
+time används för att lägga till väntetider i koden, pyautogui används för att automatisera mus- och 
+tangentbordsåtgärder på datorn och requests används för att skicka HTTP-begäran och ta emot svar från en webbserver.
+
+Koden definierar också flera funktioner som används för att hantera händelser i GUI-verktyget. 
+Dessa funktioner inkluderar att lägga till och ta bort URL: er från en trädnavigationsfält 
+att rensa URL: er och att lägga till en standardlista med URL: er.
+
+Slutligen definieras en funktion för att starta processen med att öppna flera flikar i webbläsaren och uppdatera 
+dem med en viss tidsfördröjning. Den här funktionen öppnar en Microsoft Edge-webbläsare och går sedan igenom en lista 
+med URL: er, öppnar en ny flik för varje URL och uppdaterar fliken med jämna mellanrum.
+
+GUI-verktyget innehåller också en URL- och fördröjningsinmatningsruta för användaren att ange webbadresser och 
+tidsfördröjningar, samt knappar för att lägga till och ta bort URL: er och rensa listan.
+'''
+
+'''
+Instruktioner:
+
+    1- Installera följande bibliotek: tkinter, ttk, selenium, time, pyautogui och requests på datorn där koden kommer att köras.
+
+    2- Kopiera koden till en textredigerare och spara den som en Python-fil med ett lämpligt namn.
+
+        För att använda denna kod på en annan dator, följ dessa steg:
+
+            1. Ladda ner Edge-drivrutinerna från https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/.
+
+            2. Placera drivrutinsfilen på en lämplig plats och uppdatera sökvägen till drivrutinsfilen i raden:
+            edge_path("SÖKVÄG TILL EDGEDRIVER FIL")
+
+            3. Ändra sökvägen till datorns egna profil i raden:
+            edge_options.add_argument("user-data-dir=SÖKVÄG TILL PROFILEN")
+
+            4. Öppna en terminal och navigera till mappen där filen finns, kör sedan programmet med kommandot:
+            python FILENAME.py
+
+    4- När programmet startar, lägg till URL:er och deras fördröjningar genom att skriva URL:en i URL-inmatningsfältet
+    och välja önskad fördröjning i rullgardinsmenyn bredvid. Klicka sedan på "Lägg till URL" -knappen.
+
+    5- För att ta bort en URL från listan, välj URL:en i trädnavigationsfältet och klicka på "Ta bort URL" -knappen.
+
+    6- För att rensa listan, klicka på "Rensa alla" -knappen.
+
+    7- När du är nöjd med listan, klicka på "Starta" -knappen för att öppna webbläsaren och visa de valda URL:erna i separata flikar med önskad fördröjning.
+
+    8- om koden körs på en datorn har screen saver då kan det vara bra att ladda ner progrannet Caffeine på: https://www.zhornsoftware.co.uk/caffeine/#download
+'''
+
 # Importera nödvändiga bibliotek och moduler
 import tkinter  # för att skapa GUI
 from tkinter import ttk  # för att använda tkinter-teman
@@ -14,12 +67,12 @@ from selenium.webdriver.common.keys import Keys
 
 
 # Hämta länkarna från en textfil på GitHub
-text = 'https://raw.githubusercontent.com/fakhreddin98/Volvo_Cars_projects/main/Live%20KPI%20slideshow%20script/links.txt'
+text = 'https://raw.githubusercontent.com/fakhreddin98/Volvo_Cars_projects/main/Screen%20viewer/links.txt'
 response = requests.get(text)
 link_lines = response.text.strip().split('\n')
 
 # Hämta fördröjningarna från en annan textfil på GitHub
-delay_txt = "https://raw.githubusercontent.com/fakhreddin98/Volvo_Cars_projects/main/Live%20KPI%20slideshow%20script/delay.txt"
+delay_txt = "https://raw.githubusercontent.com/fakhreddin98/Volvo_Cars_projects/main/Screen%20viewer/delay.txt"
 response = requests.get(delay_txt)
 dealy_lines = response.text.strip().split('\n')
 
