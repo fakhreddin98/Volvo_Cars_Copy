@@ -96,9 +96,9 @@ def Start():
     urls = urls_list
     delays = [int(delay) for delay in delay_list] # antar att delay_list är en lista med förseningar för varje URL i urls_list
 
-    edge_path = r"C:\Users\fakhe\Downloads\edgedriver_win64\Driver_Notes\msedgedriver.exe"   
+    edge_path = r"C:\Users\kkpi1\Downloads\edgedriver_win64\Driver_Notes\msedgedriver.exe"   
     edge_options = Options()
-    edge_options.add_argument('user-data-dir=C:\\Users\\fakhe\\AppData\\Local\\Microsoft\\Edge\\User Data')
+    edge_options.add_argument('user-data-dir=C:\\Users\\kkpi1\\AppData\\Local\\Microsoft\\Edge\\User Data')
     edge_options.add_argument('--start-maximized')
 
     driver = webdriver.Edge(service=Service(executable_path=edge_path), options=edge_options)
