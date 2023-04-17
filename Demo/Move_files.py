@@ -71,12 +71,9 @@ def move_files(source_folder, dest_parent_folder):
             if num_files != total_files + 1:
                 print(Fore.RED + f"{num_files}/{total_files} Ta inte bort {volume_info[0]}, Flyttade filen : {item[:20]}")
 
-    
-    remove_empty_folders(source_folder)
-
     if num_files + 1 == total_files + 1:
+        remove_everything_from_folder(volume_info)
         print(Fore.GREEN + f"\nAlla filer har nu flyttats från {volume_info[0]} till destinationmappen. \nDu kan nu tryggt ta bort  {volume_info[0]}  :) \n")
-        remove_everything_from_folder(source_folder)
 
 def move_zip_file(source_item):
     """
@@ -100,7 +97,7 @@ def move_mf4_file(source_item):
     """
     folder_name_mf4 = os.path.splitext(os.path.basename(volume_info[0]))[0].split('_')[0]
 
-    mf4_folder = os.path.join(r"C:\Users\fakhe\Desktop\testingHällered\New folder", folder_name_mf4 , 'data')
+    mf4_folder = os.path.join(r"C:\Users\fakhe\Desktop\testingHällered", folder_name_mf4 , 'data')
     os.makedirs(mf4_folder, exist_ok=True)
     dest_item = os.path.join(mf4_folder, os.path.basename(source_item))
     shutil.copy2(source_item, dest_item)
@@ -130,10 +127,9 @@ def remove_everything_from_folder(volume_info):
                         print(f"All contents of folder {volume_info} have been deleted.")
 
             except Exception as e:
-                        print (e)
-                        print("kunde inte ta bort alla filer försöker igen om 1 sekund")
+                        print(Fore.WHITE + "kunde inte ta bort alla filer försöker igen om 1 sekund")
                         time.sleep(1)
-                        remove_everything_from_folder(source_folder)
+                        remove_everything_from_folder(volume_info)
                         
                         
 if __name__ == '__main__':
