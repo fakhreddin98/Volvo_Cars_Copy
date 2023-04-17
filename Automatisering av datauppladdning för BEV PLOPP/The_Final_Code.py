@@ -72,11 +72,10 @@ def move_files(source_folder, dest_parent_folder):
                 print(Fore.RED + f"Antal flyttade filer {num_files} av {total_files} Ta inte bort {volume_info[0]}, Flyttade filen : {item[:20]}")
 
     
-    remove_empty_folders(source_folder)
 
     if num_files + 1 == total_files + 1:
+        remove_everything_from_folder(volume_info)
         print(Fore.GREEN + f"\nAlla filer har nu flyttats från {volume_info[0]} till destinationmappen. \nDu kan nu tryggt ta bort  {volume_info[0]}  :) \n")
-        remove_everything_from_folder(source_folder)
 
 def move_zip_file(source_item):
     """
@@ -115,39 +114,26 @@ def move_else_file(source_item):
     dest_item = os.path.join(else_folder, os.path.basename(source_item))
     shutil.copy2(source_item, dest_item)
 
-def remove_empty_folders(folder):
-    """
-    Tar bort tomma undermappar i en mapp.
-    """
-    if not os.path.exists(folder) or not os.path.isdir(folder):
-        return
 
-    for root, dirs, files in os.walk(folder, topdown=False):
-        for dir_name in dirs:
-            full_dir_path = os.path.join(root, dir_name)
+def remove_everything_from_folder(volume_info):
+    for root, dirs, files in os.walk(source_folder, topdown=False):
             try:
-                os.rmdir(full_dir_path)
-            except OSError:
-                pass
+                for file_name in files:
+                    file_path = os.path.join(root, file_name)
+                    os.remove(file_path)
+                for dir_name in dirs:
+                    dir_path = os.path.join(root, dir_name)
+                    if not dir_name == 'System Volume Information':
+                        shutil.rmtree(dir_path)
+                        # remove top-level folder
+                        shutil.rmtree(volume_info)
+                        print(f"All contents of folder {volume_info} have been deleted.")
 
-    try:
-        os.rmdir(folder)
-        print(f"Removed empty directory: {folder}")
-    except OSError:
-        pass
-
-def remove_everything_from_folder(source_folder):
-    # remove all files in the directory
-    for file_name in os.listdir(source_folder):
-        file_path = os.path.join(source_folder, file_name)
-        try:
-            if os.path.isfile(file_path):
-                os.remove(file_path)
-        except Exception as e:
-            print(Fore.RED + "kunde inte ta bort alla filer försöker igen om 1 sekund")
-            time.sleep(1)
-            remove_everything_from_folder(source_folder)
-
+            except Exception as e:
+                        print(Fore.WHITE + "kunde inte ta bort alla filer försöker igen om 1 sekund")
+                        time.sleep(1)
+                        remove_everything_from_folder(volume_info)
+                        
 if __name__ == '__main__':
     # connected_drives är en mängd som innehåller enhetsbokstäverna för alla anslutna enheter.
     connected_drives = set()
