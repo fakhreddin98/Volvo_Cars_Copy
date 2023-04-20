@@ -109,7 +109,7 @@ def move_else_file(source_item):
     """
     samma som förra men till alla filer som inte är mf4, dat, zip eller rar
     """
-    else_folder = os.path.join(r"\\gbw9061109.got.volvocars.net\PROJ2\9413-SHR-VCC127500\MEP2\Hällered\New folder\else", volume_info[0] , 'else')
+    else_folder = os.path.join(r"\\gbw9061109.got.volvocars.net\PROJ2\9413-SHR-VCC127500\MEP2\Hällered\New folder\else", volume_info[0])
     os.makedirs(else_folder, exist_ok=True)
     dest_item = os.path.join(else_folder, os.path.basename(source_item))
     shutil.copy2(source_item, dest_item)
@@ -159,7 +159,7 @@ if __name__ == '__main__':
                 # Hämtar information om enheten och skriver ut dess namn            
                 volume_info = win32api.GetVolumeInformation(new_drive + ':\\')
                 print(Fore.BLUE + f"Hittade enhet: {volume_info[0]}")
-                if '_VPT_PLOPP' in volume_info[0] or 'Info_Logs' in volume_info[0]:
+                if '_VPT_PLOPP' in volume_info[0] or 'INFO_LOGS' in volume_info[0]:
                     # Sätter sökvägen till enheten och listar alla filer i sökvägen
                     source_folder = new_drive + ':\\'
                     items = os.listdir(source_folder)
@@ -174,7 +174,7 @@ if __name__ == '__main__':
                         # Om enheten inte innehåller "_Data" i volymnamnet, skrivs ett meddelande ut om det.
                         print("Inga filer att Flytta på enheten: " + new_drive)
                 else: 
-                    print(Fore.BLUE + f"{volume_info[0]} innehåller inte '_VPT_PLOPP eller Info_Logs'.")
+                    print(Fore.BLUE + f"{volume_info[0]} innehåller inte '_VPT_PLOPP eller INFO_LOGS, inget flyttning kommer att ske'.")
 
             except Exception as e:
                 print(e)
