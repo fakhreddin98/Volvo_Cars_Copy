@@ -74,6 +74,7 @@ def move_PLOPP(source_folder, dest_parent_folder):
     
 
     if num_files + 1 == total_files + 1:
+        print(Fore.WHITE + "Tar bort alla filer från USB minnet...")
         remove_everything_from_folder(volume_info)
         print(Fore.GREEN + f"\nAlla filer har nu flyttats från {volume_info[0]} till destinationmappen. \nDu kan nu tryggt ta bort  {volume_info[0]}  :) \n")
 
@@ -146,6 +147,7 @@ def move_ICE(source_folder, dest_parent_folder):
     
 
     if num_files + 1 == total_files + 1:
+        print(Fore.WHITE + "Tar bort alla filer från USB minnet...")
         remove_everything_from_folder(volume_info)
         print(Fore.GREEN + f"\nAlla filer har nu flyttats från {volume_info[0]} till destinationmappen. \nDu kan nu tryggt ta bort  {volume_info[0]}  :) \n")
 
@@ -189,7 +191,6 @@ def move_else_ICE(source_item):
 
 
 def remove_everything_from_folder(volume_info):
-    print(Fore.WHITE + "Tar bort alla filer från USB minnet...")
     for root, dirs, files in os.walk(source_folder, topdown=False):
             try:
                 for file_name in files:
@@ -243,6 +244,7 @@ if __name__ == '__main__':
                         drive_folder = os.path.join(dest_parent_folder)
         #                move_files(drive_folder, source_folder)
                         move_PLOPP(source_folder, drive_folder)
+
                     else:
                         # Om enheten inte innehåller "_Data" i volymnamnet, skrivs ett meddelande ut om det.
                         print("Inga filer att Flytta på enheten: " + new_drive)
@@ -259,6 +261,7 @@ if __name__ == '__main__':
                         drive_folder = os.path.join(dest_parent_folder)
         #                move_files(drive_folder, source_folder)
                         move_ICE(source_folder, drive_folder)
+
                     else:
                         # Om enheten inte innehåller "_Data" i volymnamnet, skrivs ett meddelande ut om det.
                         print("Inga filer att Flytta på enheten: " + new_drive)
