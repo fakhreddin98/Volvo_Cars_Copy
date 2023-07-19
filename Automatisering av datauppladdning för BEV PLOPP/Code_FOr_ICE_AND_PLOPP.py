@@ -189,6 +189,7 @@ def move_else_ICE(source_item):
 
 
 def remove_everything_from_folder(volume_info):
+    print(Fore.WHITE + "Tar bort alla filer från USB minnet...")
     for root, dirs, files in os.walk(source_folder, topdown=False):
             try:
                 for file_name in files:
@@ -203,7 +204,6 @@ def remove_everything_from_folder(volume_info):
                         print(f"All contents of folder {volume_info} have been deleted.")
 
             except Exception as e:
-                        print(Fore.WHITE + "kunde inte ta bort alla filer försöker igen om 1 sekund")
                         time.sleep(1)
                         remove_everything_from_folder(volume_info)
                         
