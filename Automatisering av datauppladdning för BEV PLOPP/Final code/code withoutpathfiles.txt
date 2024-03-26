@@ -87,7 +87,7 @@ def move_zip_file(source_item):
     shutil.move används för att flytta filen från källmappen till zip-mappen.
     Ingen utskrift görs i denna funktion.
     """
-    zip_folder = os.path.join(r"C:\Users\fkabawe\OneDrive - Volvo Cars\Desktop\test")
+    zip_folder = os.path.join(r"C:\Users\E9439007\OneDrive - Volvo Cars\Loggfiler\IHU\Automated IHU Logs - All Vehicles")
     #zip_folder = os.path.join(r"C:\Users\fakhe\Desktop\testing\zip", folder_name_zip)
     os.makedirs(zip_folder, exist_ok=True)
     dest_item = os.path.join(zip_folder, os.path.basename(source_item))
@@ -100,7 +100,7 @@ def move_mf4_file(source_item):
     """
     folder_name_mf4 = os.path.splitext(os.path.basename(volume_info[0]))[0].split('_')[0]
 
-    mf4_folder = os.path.join(r"C:\Users\fkabawe\OneDrive - Volvo Cars\Desktop\test", folder_name_mf4 , 'data')
+    mf4_folder = os.path.join(r"\\gbw9061101.got.volvocars.net\proj\9413-SHR-VCC127600\Loggar\PLOPP", folder_name_mf4 , 'data')
     os.makedirs(mf4_folder, exist_ok=True)
     dest_item = os.path.join(mf4_folder, os.path.basename(source_item))
     shutil.copy2(source_item, dest_item)
@@ -110,7 +110,7 @@ def move_else_file(source_item):
     """
     samma som förra men till alla filer som inte är mf4, dat, zip eller rar
     """
-    else_folder = os.path.join(r"C:\Users\fkabawe\OneDrive - Volvo Cars\Desktop\test", volume_info[0])
+    else_folder = os.path.join(r"\\gbw9061101.got.volvocars.net\proj\9413-SHR-VCC127600\else\PLOPP", volume_info[0])
     os.makedirs(else_folder, exist_ok=True)
     dest_item = os.path.join(else_folder, os.path.basename(source_item))
     shutil.copy2(source_item, dest_item)
@@ -160,7 +160,7 @@ def move_zip_ICE(source_item):
     shutil.move används för att flytta filen från källmappen till zip-mappen.
     Ingen utskrift görs i denna funktion.
     """
-    zip_folder = os.path.join(r"C:\Users\fkabawe\OneDrive - Volvo Cars\Desktop\ICE")
+    zip_folder = os.path.join(r"C:\Users\E9439007\OneDrive - Volvo Cars\Loggfiler\IHU\Automated IHU Logs - All Vehicles")
     #zip_folder = os.path.join(r"C:\Users\fakhe\Desktop\testing\zip", folder_name_zip)
     os.makedirs(zip_folder, exist_ok=True)
     dest_item = os.path.join(zip_folder, os.path.basename(source_item))
@@ -173,7 +173,7 @@ def move_mf4_ICE(source_item):
     """
     folder_name_mf4 = os.path.splitext(os.path.basename(volume_info[0]))[0].split('_')[0]
 
-    mf4_folder = os.path.join(r"C:\Users\fkabawe\OneDrive - Volvo Cars\Desktop\ICE", folder_name_mf4 , 'data')
+    mf4_folder = os.path.join(r"\\gotgnms061.got.volvocars.net\PROJ\9413-SHR-VCC140000\Loggar\PLOPP", folder_name_mf4 , 'data')
     os.makedirs(mf4_folder, exist_ok=True)
     dest_item = os.path.join(mf4_folder, os.path.basename(source_item))
     shutil.copy2(source_item, dest_item)
@@ -183,7 +183,7 @@ def move_else_ICE(source_item):
     """
     samma som förra men till alla filer som inte är mf4, dat, zip eller rar
     """
-    else_folder = os.path.join(r"C:\Users\fkabawe\OneDrive - Volvo Cars\Desktop\ICE", volume_info[0])
+    else_folder = os.path.join(r"\\gotgnms061.got.volvocars.net\PROJ\9413-SHR-VCC140000\Loggar\PLOPP\else", volume_info[0])
     os.makedirs(else_folder, exist_ok=True)
     dest_item = os.path.join(else_folder, os.path.basename(source_item))
     shutil.copy2(source_item, dest_item)
@@ -233,7 +233,7 @@ if __name__ == '__main__':
                 # Hämtar information om enheten och skriver ut dess namn            
                 volume_info = win32api.GetVolumeInformation(new_drive + ':\\')
                 print(Fore.BLUE + f"Hittade enhet: {volume_info[0]}")
-                if '_VPT_PLOPP' in volume_info[0] or 'INFO_LOGS' in volume_info[0]:
+                if 'VPT_BEV_PLOPP' in volume_info[0] or 'INFO_LOGS' in volume_info[0]:
                     # Sätter sökvägen till enheten och listar alla filer i sökvägen
                     source_folder = new_drive + ':\\'
                     items = os.listdir(source_folder)
@@ -250,7 +250,7 @@ if __name__ == '__main__':
                         print("Inga filer att Flytta på enheten: " + new_drive)
 
                         
-                elif '_VPT_ICE' in volume_info[0]:
+                elif 'VPT_ICE_PLOPP' in volume_info[0]:
                     # Sätter sökvägen till enheten och listar alla filer i sökvägen
                     source_folder = new_drive + ':\\'
                     items = os.listdir(source_folder)
