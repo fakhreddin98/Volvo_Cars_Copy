@@ -1,4 +1,0 @@
-
-
-time.sleep(4)
-os.system(f'powershell "$driveEject = New-Object -comObject Shell.Application; $driveEject.Namespace(17).ParseName(\\"{source_folder[:2]}\\").InvokeVerb(\\"Eject\\")"')
